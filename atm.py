@@ -11,7 +11,18 @@ for i in range(len(users)):
   for j in range(len(users[i])):
     users[i][j] = int(users[i][j])
 
+def loadState():
+  global users
+  f = open('dataUser.data', 'r+')
+  users = f.readlines()
+  for i in range(len(users)):
+    users[i] = users[i][:-1].split(",")
+  for i in range(len(users)):
+    for j in range(len(users[i])):
+      users[i][j] = int(users[i][j])
+
 def saveState():
+  global users
   f = open('dataUser.data', 'w+')
   data = ""
   for i in range(len(users)):
@@ -71,7 +82,7 @@ def reset():
   userIndex = -1
 
 def main():
-  global mesinNyala, noATM, pinATM, userIndex, step
+  global users, mesinNyala, noATM, pinATM, userIndex, step
   while (mesinNyala):
     while (noATM == 0):
       temp = int(input("Tolong masukkan kartu atm\nNomor ATM : "))
@@ -92,16 +103,19 @@ def main():
         printDivider()
     while (noATM != 0 and pinATM != 0):
       printDivider()
-      saveState()
       print("Silakan memilih transaksi")
       printActions()
       commands = int(input(""))
       if commands == 1:
+        loadState()
         step = 1
         sistemSetoran()
+        saveState()
       elif commands == 2:
+        loadState()
         step = 2
         sistemPenarikan()
+        saveState()
       elif commands == 3:
         step = 0
         print("Terima kasih telah menggunakan ATM BCA!")
